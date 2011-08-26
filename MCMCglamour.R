@@ -3,7 +3,7 @@ match.length <- function(x) attr(x, 'match.length')
 
 match.random <- function(x) {
 
-        r <- regexpr("\\w+$", x, perl=TRUE)
+        r <- regexpr("[^:]+$", x, perl=TRUE) # match from the last : to the end of the line
         random <- substr(x, r[1], r[1] + match.length(r)[1] - 1)
 
         return(random)
