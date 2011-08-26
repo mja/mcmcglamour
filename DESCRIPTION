@@ -1,0 +1,10 @@
+Package: mcmcglamour
+Title: Accessories for MCMCglmm
+Version: 0.1
+Author: Mark James Adams <mark@raysend.com>
+Maintainer: Mark James Adams <mark@raysend.com>
+Description: Utility functions for processing MCMCglmm model outputs
+Suggests:
+  MCMCglmm,
+  coda
+License: MIT
