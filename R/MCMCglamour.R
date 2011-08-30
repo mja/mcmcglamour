@@ -31,6 +31,7 @@ reshape.VCV <- function(VCV) {
   return(V)
 }
 
+# Proportional variance compnents, v^2
 var2v2 <- function(V) {
 
   require(plyr)
@@ -40,4 +41,14 @@ var2v2 <- function(V) {
   v2 <- plyr::aaply(vcv.diag, .margins=c(1,3), .fun=function(V) V / sum(V))
 
   return(v2)
+}
+
+# Turn into correlations
+var2rV <- function(V) {
+
+   require(plyr)
+
+   rV <- plyr::aaply(V, .margins=c(1,4), .fun=cov2cor)
+
+   return(rV)
 }
