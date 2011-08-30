@@ -1,6 +1,4 @@
 
-
-
 match.length <- function(x) attr(x, 'match.length')
 
 match.random <- function(x) {
@@ -33,3 +31,13 @@ reshape.VCV <- function(VCV) {
   return(V)
 }
 
+var2v2 <- function(V) {
+
+  require(plyr)
+
+  vcv.diag <- plyr::aaply(V, .margins=c(1,4), .fun=diag)
+
+  v2 <- plyr::aaply(vcv.diag, .margins=c(1,3), .fun=function(V) V / sum(V))
+
+  return(v2)
+}
