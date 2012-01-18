@@ -11,7 +11,7 @@ match.random <- function(x) {
 
  match.response <- function(x) {
 
-         r <- regexpr("^[a-z]+", x, perl=TRUE)
+         r <- regexpr("^[a-z_0-9]+", x, perl=TRUE)
          response <- substr(x, r[1], r[1] + match.length(r)[1] - 1)
 
          return(response)
