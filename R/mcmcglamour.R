@@ -26,7 +26,7 @@ reshape.VCV <- function(VCV) {
   response <- unique(sapply(dimnames(VCV)[[2]], match.response))
 
   nitt <- dim(VCV)[1] # number of iterations
-  V <- array(as.vector(VCV), dim=c(nitt, length(response), length(response), length(random)), dimnames=list(itt=as.character(1:nitt), trait=response, trait=response, V=random))
+  V <- array(as.vector(VCV), dim=c(nitt, length(response), length(response), length(random)), dimnames=list(itt=as.character(1:nitt), trait1=response, trait2=response, V=random))
 
   return(V)
 }
