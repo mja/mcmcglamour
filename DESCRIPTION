@@ -5,10 +5,10 @@ Author: Mark James Adams <mark@raysend.com>
 Maintainer: Mark James Adams <mark@raysend.com>
 Description: Utility functions for processing MCMCglmm model outputs
 Depends:
-    plyr
-Suggests:
-    MCMCglmm,
+    plyr,
     coda
+Suggests:
+    MCMCglmm
 License: MIT
 Collate:
     'io.R'

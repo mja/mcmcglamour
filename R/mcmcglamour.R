@@ -80,3 +80,55 @@ var2rV <- function(V) {
 
    return(rV)
 }
+
+#' Link MCMCglmm objects as a list
+#'
+#' Links together multiple runs (chains) of an MCMCglmm
+#' model. It turns the Sol and VCV slots into mcmc.list objects
+#'
+#' @export
+#' @examples
+#' data(BTdata)
+#' m1 <- MCMCglmm(cbind(tarsus, back) ~ trait + trait:sex + trait:hatchdate - 1, random=~us(trait):dam, rcov=~us(trait):units, data=BTdata, family=c('gaussian', 'gaussian'))
+#' m2 <- MCMCglmm(cbind(tarsus, back) ~ trait + trait:sex + trait:hatchdate - 1, random=~us(trait):dam, rcov=~us(trait):units, data=BTdata, family=c('gaussian', 'gaussian'))
+#' m <- link_chains(list(m1, m2))
+#' plot(m$VCV)
+link_chains <- function(chains) {
+        model <- chains[[1]]
+        model$Sol <- mcmc.list(llply(chains, function(x) x$Sol))
+        model$VCV <- mcmc.list(llply(chains, function(x) x$VCV))
+        return(model)
+}
+
+#' Merge a chained-linked MCMCglmm model
+#'
+#' Turns a linked MCMCglmm object produced by \code{\link{link_chains}} into an object with
+#' concatenated \code{Sol} and \code{VCV} matrices.
+#'
+#' @export
+#' @examples
+#' data(BTdata)
+#' m1 <- MCMCglmm(cbind(tarsus, back) ~ trait + trait:sex + trait:hatchdate - 1, random=~us(trait):dam, rcov=~us(trait):units, data=BTdata, family=c('gaussian', 'gaussian'))
+#' m2 <- MCMCglmm(cbind(tarsus, back) ~ trait + trait:sex + trait:hatchdate - 1, random=~us(trait):dam, rcov=~us(trait):units, data=BTdata, family=c('gaussian', 'gaussian'))
+#' m <- link_chains(list(m1, m2))
+#' bt_model <- merge_chains(m)
+#' summary(bt_model)
+merge_chains <- function(model) {
+        model$Sol <- merge_chain(model$Sol)
+        model$VCV <- merge_chain(model$VCV)
+
+        return(model)
+}
+merge_chain <- function(mcmc_list) {
+   # turn into a 3 dimensional array
+   a3 <- laply(mcmc_list, function(x) x)
+   # rearrange into a 2-d array
+   d <- dim(a3)
+   n_iter <- d[1] * d[2]
+   n_components <- d[3]
+   a2 <- array(a3, dim=c(n_iter, n_components), dimnames=list(iter=seq(n_iter), V=dimnames(a3)[[3]]))
+
+   return(mcmc(a2))
+}
+
+

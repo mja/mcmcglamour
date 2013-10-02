@@ -1,3 +1,5 @@
+export(link_chains)
+export(merge_chains)
 export(read_rdss)
 export(reshapeVCV)
 export(var2rV)
