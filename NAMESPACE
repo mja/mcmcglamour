@@ -1,5 +1,4 @@
-export(reshape.VCV)
+export(read_rdss)
 export(reshapeVCV)
-export(var2v2)
 export(var2rV)
-
+export(var2v2)

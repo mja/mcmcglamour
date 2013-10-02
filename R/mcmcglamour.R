@@ -17,8 +17,16 @@ match_random <- function(x) {
          return(response)
  }
 
-# Turn a two dimensional nitt × (v × p × p) matrix of (co)variances
-# into a nitt × p × p × v dimensional array
+#' Reshape MCMCglmm VCV matrix into an array
+#'
+#' Turn a two dimensional nitt × (v × p × p) matrix of (co)variances
+#' into a nitt × p × p × v dimensional array
+#'
+#' @export
+#' @examples
+#' data(BTdata)
+#' m <- MCMCglmm(cbind(tarsus, back) ~ trait + trait:sex + trait:hatchdate - 1, random=~us(trait):dam, rcov=~us(trait):units, data=BTdata, family=c('gaussian', 'gaussian'))
+#' V <- reshapeVCV(m$VCV)
 reshapeVCV <- function(VCV) {
 
   # extract random effect and response terms from the VCV dimension names
@@ -31,9 +39,18 @@ reshapeVCV <- function(VCV) {
   return(V)
 }
 
-reshape.VCV <- reshape_VCV
+reshape.VCV <- reshapeVCV
 
-# Proportional variance compnents, v^2
+#' Proportional variance components
+#'
+#' Proportional variance components, v^2, from an array of variances
+#' and covariances
+#' @export
+#' @examples
+#' data(BTdata)
+#' m <- MCMCglmm(cbind(tarsus, back) ~ trait + trait:sex + trait:hatchdate - 1, random=~us(trait):dam, rcov=~us(trait):units, data=BTdata, family=c('gaussian', 'gaussian'))
+#' V <- reshapeVCV(m$VCV)
+#' v2 <- var2v2(V)
 var2v2 <- function(V) {
 
   require(plyr)
@@ -45,6 +62,15 @@ var2v2 <- function(V) {
   return(v2)
 }
 
+#' Variance component correlations
+#'
+#' Turn an array of variances/covariance matrices into correlations
+#' @export
+#' @examples
+#' data(BTdata)
+#' m <- MCMCglmm(cbind(tarsus, back) ~ trait + trait:sex + trait:hatchdate - 1, random=~us(trait):dam, rcov=~us(trait):units, data=BTdata, family=c('gaussian', 'gaussian'))
+#' V <- reshapeVCV(m$VCV)
+#' rV <- var2rV(V)
 # Turn into correlations
 var2rV <- function(V) {
 
