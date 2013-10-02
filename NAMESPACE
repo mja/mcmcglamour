@@ -1,4 +1,5 @@
 export(reshape.VCV)
+export(reshapeVCV)
 export(var2v2)
 export(var2rV)
 
